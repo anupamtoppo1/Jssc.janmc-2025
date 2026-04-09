@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSSC | JANMC-2025 Result Portal</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ff9d00; /* The orange side color */
+        }
+
+        /* Top Blue Bar */
+        .top-bar {
+            background-color: #002e4d;
+            color: white;
+            padding: 5px 20px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Header Section */
+        header {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            border-bottom: 8px solid #000;
+        }
+
+        .logo-img {
+            height: 80px;
+            margin-right: 20px;
+        }
+
+        .header-titles h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .header-titles h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #2e7d32; 
+            font-weight: bold;
+        }
+
+        .header-titles h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #555;
+            font-weight: normal;
+        }
+
+        /* Main Content Area */
+        .main-wrapper {
+            background-color: white;
+            min-height: 100vh;
+            margin: 0 10%; /* Creates the orange side bars */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            box-sizing: border-box;
+        }
+
+        .login-title {
+            font-size: 24px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #333;
+        }
+
+        input::placeholder {
+            color: #999;
+        }
+
+        .helper-text {
+            color: blue;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* Captcha Section */
+        .captcha-box {
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); 
+            background-color: #e8e8e8;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #999;
+            margin: 15px 0;
+            user-select: none;
+            color: #222;
+            text-decoration: line-through;
+        }
+
+        .reload-btn {
+            color: #ff9d00;
+            text-decoration: underline;
+            font-size: 13px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .sign-in-btn {
+            width: 100%;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Result View Styles */
+        #result-section {
+            display: none;
+            width: 90%;
+            max-width: 700px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .result-table th, .result-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .result-table th {
+            background-color: #f5f5f5;
+            color: #333;
+            width: 45%;
+        }
+
+        .score-val {
+            font-weight: bold;
+            color: #002e4d;
+        }
+
+        .total-row {
+            background-color: #fff9c4 !important;
+            font-size: 16px !important;
+        }
+
+        #loader {
+            display: none;
+            margin: 40px;
+            text-align: center;
+        }
+
+        @media print {
+            .top-bar, .reload-btn, .sign-in-btn, input, .captcha-box { display: none; }
+            .main-wrapper { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span id="live-clock">-- --- -- 2025 | 00:00:00 IST</span>
+    </div>
+
+    <header>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Emblem_of_Jharkhand.svg/1200px-Emblem_of_Jharkhand.svg.png" alt="Emblem" class="logo-img">
+        <div class="header-titles">
+            <h1>Government of Jharkhand</h1>
+            <h2>Jharkhand Staff Selection Commission</h2>
+            <h3>झारखंड कर्मचारी चयन आयोग</h3>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        
+        <!-- Login Form -->
+        <div id="login-box" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <div class="login-title">Login</div>
+
+            <div class="form-container">
+                <div class="input-group">
+                    <input type="text" id="candName" placeholder="ENTER CANDIDATE NAME">
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="rollNo" placeholder="ENTER ROLL NUMBER">
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="dob" placeholder="ENTER DOB (YYYYMMDD)">
+                    <div class="helper-text">(For example, if your Date of Birth is 01 February 1990, then enter: 19900201)</div>
+                </div>
+
+                <div class="captcha-box" id="captcha-code">A7B2X</div>
+                
+                <div class="input-group">
+                    <input type="text" id="captchaInput" placeholder="CAPTCHA CODE">
+                    <button class="reload-btn" onclick="generateCaptcha()">Reload Captcha</button>
+                </div>
+
+                <button class="sign-in-btn" onclick="processResult()">Sign in</button>
+            </div>
+        </div>
+
+        <div id="loader">
+            <img src="https://i.gifer.com/ZZ5H.gif" width="50"><br>
+            Authenticating with Server...
+        </div>
+
+        <!-- Result Card -->
+        <div id="result-section">
+            <h3 style="text-align: center; border-bottom: 2px solid #002e4d; padding-bottom: 10px;">JANMC - 2025 OFFICIAL SCORE CARD</h3>
+            
+            <table class="result-table">
+                <tr>
+                    <th>Candidate Name</th>
+                    <td id="resName" style="text-transform: uppercase; font-weight: bold;"></td>
+                </tr>
+                <tr>
+                    <th>Roll Number</th>
+                    <td id="resRoll"></td>
+                </tr>
+                <tr>
+                    <th>Date of Birth</th>
+                    <td id="resDOB"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background: #002e4d; color: white; text-align: center; font-weight: bold;">MARKS DETAILS</td>
+                </tr>
+                <tr>
+                    <th>Entrance Exam Score</th>
+                    <td><span id="scoreExam" class="score-val"></span> / 50</td>
+                </tr>
+                <tr>
+                    <th>Work Experience Weightage</th>
+                    <td><span id="scoreExp" class="score-val"></span> / 50</td>
+                </tr>
+                <tr>
+                    <th>Curricular Activities</th>
+                    <td><span id="scoreCur" class="score-val"></span> / 50</td>
+                </tr>
+                <tr class="total-row">
+                    <th>GRAND TOTAL MARKS</th>
+                    <th><span id="totalMarks"></span> / 150</th>
+                </tr>
+                <tr>
+                    <th>Result Status</th>
+                    <td id="status" style="font-weight: bold; font-size: 16px;"></td>
+                </tr>
+            </table>
+
+            <div style="margin-top: 20px; font-size: 11px; color: #666;">
+                * This is a provisional result generated by JSSC portal. Any discrepancy should be reported within 7 days.
+            </div>
+            
+            <center style="margin-top: 30px;">
+                <button onclick="window.print()" style="padding: 10px 20px; background: #444; color: white; border: none; cursor: pointer;">Print Score Card</button>
+                <button onclick="location.reload()" style="padding: 10px 20px; border: 1px solid #ccc; cursor: pointer; margin-left: 10px;">Logout</button>
+            </center>
+        </div>
+
+    </div>
+
+    <script>
+        // Real-time clock logic
+        function updateClock() {
+            const now = new Date();
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const day = days[now.getDay()];
+            const month = months[now.getMonth()];
+            const date = now.getDate().toString().padStart(2, '0');
+            const year = now.getFullYear();
+            const time = now.toLocaleTimeString('en-GB');
+
+            document.getElementById('live-clock').innerText = `${day} ${month} ${date} ${year} | ${time} IST`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Captcha Generator
+        function generateCaptcha() {
+            const code = Math.random().toString(36).substring(2, 7).toUpperCase();
+            document.getElementById('captcha-code').innerText = code;
+        }
+        generateCaptcha();
+
+        function processResult() {
+            const name = document.getElementById('candName').value;
+            const roll = document.getElementById('rollNo').value;
+            const dob = document.getElementById('dob').value;
+
+            if(!name || !roll || !dob) {
+                alert("Error: All fields are mandatory.");
+                return;
+            }
+
+            // Show Loader
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('result-section').style.display = 'block';
+
+                // Random Marks Generation
+                const exam = Math.floor(Math.random() * 21) + 25; // Random 25 to 45
+                const exp = Math.floor(Math.random() * 21) + 20;  // Random 20 to 40
+                const cur = Math.floor(Math.random() * 26) + 15;  // Random 15 to 40
+                const total = exam + exp + cur;
+
+                document.getElementById('resName').innerText = name;
+                document.getElementById('resRoll').innerText = roll;
+                document.getElementById('resDOB').innerText = dob;
+                
+                document.getElementById('scoreExam').innerText = exam;
+                document.getElementById('scoreExp').innerText = exp;
+                document.getElementById('scoreCur').innerText = cur;
+                document.getElementById('totalMarks').innerText = total;
+
+                const statusEl = document.getElementById('status');
+                if(total >= 85) {
+                    statusEl.innerText = "QUALIFIED (MERIT LIST)";
+                    statusEl.style.color = "green";
+                } else {
+                    statusEl.innerText = "NOT QUALIFIED";
+                    statusEl.style.color = "red";
+                }
+
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
