@@ -349,7 +349,7 @@
                 document.getElementById('result-section').style.display = 'block';
 
                 // Random Marks Generation
-                const exam = Math.floor(Math.random() * 21) + 25; // Random 25 to 45
+                const exam = Math.floor(Math.random() * 26) + 25; // Random 25 to 45
                 const exp = Math.floor(Math.random() * 21) + 20;  // Random 20 to 40
                 const cur = Math.floor(Math.random() * 26) + 15;  // Random 15 to 40
                 const total = exam + exp + cur;
@@ -364,7 +364,7 @@
                 document.getElementById('totalMarks').innerText = total;
 
                 const statusEl = document.getElementById('status');
-                if(total >= 85) {
+                if(total >= 95) {
                     statusEl.innerText = "QUALIFIED (MERIT LIST)";
                     statusEl.style.color = "green";
                 } else {
