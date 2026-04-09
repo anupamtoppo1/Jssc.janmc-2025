@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSSC | JANMC-2025 Result Portal</title>
+    <title>JSSC | Jharkhand Staff Selection Commission</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #ff9d00; /* The orange side color */
+            background-color: #ff9d00; /* Orange side bars */
         }
 
         /* Top Blue Bar */
@@ -23,7 +23,6 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 5px;
         }
 
         /* Header Section */
@@ -40,32 +39,15 @@
             margin-right: 20px;
         }
 
-        .header-titles h1 {
-            margin: 0;
-            font-size: 18px;
-            color: #333;
-            font-weight: normal;
-        }
+        .header-titles h1 { margin: 0; font-size: 18px; color: #333; font-weight: normal; }
+        .header-titles h2 { margin: 0; font-size: 22px; color: #2e7d32; font-weight: bold; }
+        .header-titles h3 { margin: 0; font-size: 18px; color: #555; font-weight: normal; }
 
-        .header-titles h2 {
-            margin: 0;
-            font-size: 22px;
-            color: #2e7d32; 
-            font-weight: bold;
-        }
-
-        .header-titles h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #555;
-            font-weight: normal;
-        }
-
-        /* Main Content Area */
+        /* Main Center Wrapper */
         .main-wrapper {
             background-color: white;
             min-height: 100vh;
-            margin: 0 10%; /* Creates the orange side bars */
+            margin: 0 10%; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -84,9 +66,7 @@
             max-width: 450px;
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+        .input-group { margin-bottom: 15px; }
 
         input {
             width: 100%;
@@ -95,11 +75,6 @@
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 14px;
-            color: #333;
-        }
-
-        input::placeholder {
-            color: #999;
         }
 
         .helper-text {
@@ -109,9 +84,8 @@
             font-weight: bold;
         }
 
-        /* Captcha Section */
+        /* Captcha */
         .captcha-box {
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); 
             background-color: #e8e8e8;
             font-family: 'Courier New', Courier, monospace;
             font-size: 32px;
@@ -123,7 +97,8 @@
             margin: 15px 0;
             user-select: none;
             color: #222;
-            text-decoration: line-through;
+            background-image: radial-gradient(#999 10%, transparent 10%);
+            background-size: 4px 4px;
         }
 
         .reload-btn {
@@ -133,8 +108,6 @@
             cursor: pointer;
             background: none;
             border: none;
-            padding: 0;
-            margin-bottom: 10px;
         }
 
         .sign-in-btn {
@@ -149,7 +122,7 @@
             margin-top: 10px;
         }
 
-        /* Result View Styles */
+        /* Result Table Styles */
         #result-section {
             display: none;
             width: 90%;
@@ -172,32 +145,12 @@
             font-size: 14px;
         }
 
-        .result-table th {
-            background-color: #f5f5f5;
-            color: #333;
-            width: 45%;
-        }
+        .result-table th { background-color: #f5f5f5; width: 45%; }
+        .score-val { font-weight: bold; color: #002e4d; }
+        .total-row { background-color: #fff9c4 !important; font-weight: bold; }
 
-        .score-val {
-            font-weight: bold;
-            color: #002e4d;
-        }
+        #loader { display: none; margin: 40px; text-align: center; font-weight: bold; }
 
-        .total-row {
-            background-color: #fff9c4 !important;
-            font-size: 16px !important;
-        }
-
-        #loader {
-            display: none;
-            margin: 40px;
-            text-align: center;
-        }
-
-        @media print {
-            .top-bar, .reload-btn, .sign-in-btn, input, .captcha-box { display: none; }
-            .main-wrapper { margin: 0; }
-        }
     </style>
 </head>
 <body>
@@ -225,17 +178,15 @@
                 <div class="input-group">
                     <input type="text" id="candName" placeholder="ENTER CANDIDATE NAME">
                 </div>
-
                 <div class="input-group">
                     <input type="text" id="rollNo" placeholder="ENTER ROLL NUMBER">
                 </div>
-
                 <div class="input-group">
                     <input type="text" id="dob" placeholder="ENTER DOB (YYYYMMDD)">
                     <div class="helper-text">(For example, if your Date of Birth is 01 February 1990, then enter: 19900201)</div>
                 </div>
 
-                <div class="captcha-box" id="captcha-code">A7B2X</div>
+                <div class="captcha-box" id="captcha-code">B8X2P</div>
                 
                 <div class="input-group">
                     <input type="text" id="captchaInput" placeholder="CAPTCHA CODE">
@@ -247,13 +198,13 @@
         </div>
 
         <div id="loader">
-            <img src="https://i.gifer.com/ZZ5H.gif" width="50"><br>
-            Authenticating with Server...
+            <p>Authenticating credentials...</p>
+            <p>Fetching Secure Result Data...</p>
         </div>
 
         <!-- Result Card -->
         <div id="result-section">
-            <h3 style="text-align: center; border-bottom: 2px solid #002e4d; padding-bottom: 10px;">JANMC - 2025 OFFICIAL SCORE CARD</h3>
+            <h3 style="text-align: center; border-bottom: 2px solid #002e4d; padding-bottom: 10px;">JANMC - 2025 SCORE CARD</h3>
             
             <table class="result-table">
                 <tr>
@@ -265,65 +216,51 @@
                     <td id="resRoll"></td>
                 </tr>
                 <tr>
-                    <th>Date of Birth</th>
-                    <td id="resDOB"></td>
+                    <td colspan="2" style="background: #002e4d; color: white; text-align: center; font-weight: bold;">DETAILED COMPONENT MARKS</td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="background: #002e4d; color: white; text-align: center; font-weight: bold;">MARKS DETAILS</td>
-                </tr>
-                <tr>
-                    <th>Entrance Exam Score</th>
+                    <th>Exam Score</th>
                     <td><span id="scoreExam" class="score-val"></span> / 50</td>
                 </tr>
                 <tr>
-                    <th>Work Experience Weightage</th>
+                    <th>Experience Weightage</th>
                     <td><span id="scoreExp" class="score-val"></span> / 50</td>
                 </tr>
                 <tr>
-                    <th>Curricular Activities</th>
+                    <th>Extra-Curricular Activities</th>
                     <td><span id="scoreCur" class="score-val"></span> / 50</td>
                 </tr>
                 <tr class="total-row">
-                    <th>GRAND TOTAL MARKS</th>
+                    <th>FINAL AGGREGATE MARKS</th>
                     <th><span id="totalMarks"></span> / 150</th>
                 </tr>
                 <tr>
-                    <th>Result Status</th>
-                    <td id="status" style="font-weight: bold; font-size: 16px;"></td>
+                    <th>Remarks</th>
+                    <td id="status" style="font-weight: bold;"></td>
                 </tr>
             </table>
 
-            <div style="margin-top: 20px; font-size: 11px; color: #666;">
-                * This is a provisional result generated by JSSC portal. Any discrepancy should be reported within 7 days.
-            </div>
+            <p style="font-size: 11px; margin-top: 15px;">* This is a provisional mark sheet generated for Prank Purpose only .</p>
             
-            <center style="margin-top: 30px;">
-                <button onclick="window.print()" style="padding: 10px 20px; background: #444; color: white; border: none; cursor: pointer;">Print Score Card</button>
-                <button onclick="location.reload()" style="padding: 10px 20px; border: 1px solid #ccc; cursor: pointer; margin-left: 10px;">Logout</button>
+            <center style="margin-top: 20px;">
+                <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer;">Print Result</button>
+                <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer; margin-left: 10px;">Logout</button>
             </center>
         </div>
-
     </div>
 
     <script>
-        // Real-time clock logic
+        // Clock
         function updateClock() {
             const now = new Date();
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            
-            const day = days[now.getDay()];
-            const month = months[now.getMonth()];
-            const date = now.getDate().toString().padStart(2, '0');
-            const year = now.getFullYear();
-            const time = now.toLocaleTimeString('en-GB');
-
-            document.getElementById('live-clock').innerText = `${day} ${month} ${date} ${year} | ${time} IST`;
+            document.getElementById('live-clock').innerText = `${days[now.getDay()]} ${months[now.getMonth()]} ${now.getDate().toString().padStart(2, '0')} ${now.getFullYear()} | ${now.toLocaleTimeString('en-GB')} IST`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Captcha Generator
+        // Captcha
         function generateCaptcha() {
             const code = Math.random().toString(36).substring(2, 7).toUpperCase();
             document.getElementById('captcha-code').innerText = code;
@@ -335,12 +272,8 @@
             const roll = document.getElementById('rollNo').value;
             const dob = document.getElementById('dob').value;
 
-            if(!name || !roll || !dob) {
-                alert("Error: All fields are mandatory.");
-                return;
-            }
+            if(!name || !roll || !dob) { alert("Please fill all fields."); return; }
 
-            // Show Loader
             document.getElementById('login-box').style.display = 'none';
             document.getElementById('loader').style.display = 'block';
 
@@ -348,31 +281,32 @@
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('result-section').style.display = 'block';
 
-                // Random Marks Generation
-                const exam = Math.floor(Math.random() * 26) + 25; // Random 25 to 45
-                const exp = Math.floor(Math.random() * 21) + 20;  // Random 20 to 40
-                const cur = Math.floor(Math.random() * 26) + 15;  // Random 15 to 40
+                // Specific Prank Logic Ranges:
+                // Exam: 10 to 35
+                const exam = Math.floor(Math.random() * (35 - 10 + 1)) + 10;
+                // Work: 10 to 37
+                const exp = Math.floor(Math.random() * (37 - 10 + 1)) + 10;
+                // Extra: 10 to 30
+                const cur = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
+                
                 const total = exam + exp + cur;
 
                 document.getElementById('resName').innerText = name;
                 document.getElementById('resRoll').innerText = roll;
-                document.getElementById('resDOB').innerText = dob;
-                
                 document.getElementById('scoreExam').innerText = exam;
                 document.getElementById('scoreExp').innerText = exp;
                 document.getElementById('scoreCur').innerText = cur;
                 document.getElementById('totalMarks').innerText = total;
 
                 const statusEl = document.getElementById('status');
-                if(total >= 95) {
-                    statusEl.innerText = "QUALIFIED (MERIT LIST)";
+                if(total > 60) {
+                    statusEl.innerText = "QUALIFIED FOR DOCUMENT VERIFICATION";
                     statusEl.style.color = "green";
                 } else {
-                    statusEl.innerText = "NOT QUALIFIED";
+                    statusEl.innerText = "NOT RECOMMENDED IN MERIT";
                     statusEl.style.color = "red";
                 }
-
-            }, 2000);
+            }, 1800);
         }
     </script>
 </body>
